@@ -5,4 +5,4 @@ pacman-disowned.sh
 *.tmp
 
 # Ignore everything in DEV/
-DEV/**
+DEV/
