@@ -1,20 +1,22 @@
 #################################################################################
 #  README
 #
+#
+#
 #  This suite of scripts provides a simple interface to update packages on
 #    Arch Linux.
 #
-#  DEPENDENCIES:  pacman
-#		  pacmatic (optiopnal)
+#  ARCH DEPENDENCIES:	pacman
+#			pacmatic (optiopnal)
 #
-#  Files:
-#	CONFIG_SETUP
-#	CONFIG_FUNCS_TEMPLATE
+#  Files:  update.pacman.sh
+#	   -- reflector.sh
 #
 #
-#	CONFIG_FUNCS_CREATOR:	Uses CONFIG_FUNCS_BUILDER to create CONFIG_FUNCS
-#	CONFIG_SETUP:			Master script uses CONFIG_FUNCS to install all needed
-#						files, folders, packages for a fully operational new install.
+#
+#
+#
+#
 #
 #  USE: Make sure that all scripts are executable, and folder is on your $PATH:
 #	     $ cd ~/bin/PACMAN			       # cd into script folder
@@ -24,5 +26,6 @@
 #
 #  $ update.pacman.sh
 #
-#  NB:
+#  NB:  You may want to add: alias UPDATE="update.pacman.sh" to your .bashrc
+#
 #################################################################################
