@@ -7,7 +7,7 @@
 #    Arch Linux.
 #
 #  ARCH DEPENDENCIES:	pacman
-#			pacmatic (optiopnal)
+#			pacmatic (optional)
 #
 #  Files:  update.pacman.sh
 #	   -- reflector.sh
