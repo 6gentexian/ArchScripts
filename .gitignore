@@ -1,8 +1,8 @@
 # File that appears obsolete
 pacman-disowned.sh
 
-# Ignore all .tmp files
+# Ignore all non-essential files
 *.tmp
 
-# Ignore everything in DEV/
+# Ignore everything in sub-folders
 DEV/
