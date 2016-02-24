@@ -1,27 +1,31 @@
 #################################################################################
 #  README
-#  ======
-#
-#
-#  This suite of scripts provides
 #
 #
 #
-#  FILES:
+#  This suite of scripts provides a simple interface to update packages on
+#    Arch Linux.
 #
+#  ARCH DEPENDENCIES:	pacman
+#			pacmatic (optional)
 #
-#
-#  DEPENDENCIES:
-#
-#
+#  Files:  update.pacman.sh
+#	   -- reflector.sh
 #
 #
 #
 #
-#  USE:  $
 #
-#  NB:
 #
-#  TODOs:
+#
+#  USE: Make sure that all scripts are executable, and folder is on your $PATH:
+#	     $ cd ~/bin/PACMAN			       # cd into script folder
+#	     $ chmod +x update.pacman.sh reflector.sh
+#	     $ echo $PATH
+#
+#
+#  $ update.pacman.sh
+#
+#  NB:  You may want to add: alias UPDATE="update.pacman.sh" to your .bashrc
 #
 #################################################################################
