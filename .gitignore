@@ -3,6 +3,7 @@ pacman-disowned.sh
 
 # Ignore all non-essential files
 *.tmp
+*~
 
 # Ignore everything in sub-folders
 DEV/
