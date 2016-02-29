@@ -76,3 +76,49 @@ prYellow "All orphaned packages: \nPackages installed as depedencies but are now
 
 prGreen "Upgrade complete!!"
 #################################################################################
+
+
+# echo "Updating the Arch Build System local packages"
+# sudo abs
+# echo ""; echo ""
+
+# # make sure that cache is cleared
+# echo "Clearing cache of tarballs..."
+# sudo pacman -Sc
+# echo ""; echo ""
+
+# # update the mirror list
+# echo "Updating the mirrorlist: /etc/pacman.d/mirrorlist"
+# /home/edward/bin/reflector.sh > /home/edward/TMP/mirrorlist
+# sudo mv /home/edward/TMP/mirrorlist /etc/pacman.d/mirrorlist
+# echo ""; echo ""
+
+# # force refresh and sync and update all packages
+# echo "Refresh, sync, and update all packages"
+# sudo pacmatic -Syyu
+# echo ""; echo ""
+
+# # backing up list of all installed packages
+# echo "Creating list of all installed packages in: /home/edward/.config/pacman/installed_pkglist.txt"
+# mkdir -p /home/edward/.config/pacman
+# pacman -Qq > /home/edward/.config/pacman/installed_pkglist.txt
+# cp /home/edward/.config/pacman/installed_pkglist.txt /home/edward/Dropbox/TW/SCRIPTS/installed_pkglist.txt
+# echo ""; echo ""
+
+# #  backup the current list of pacman installed packages: $ pacman -Qqen > pkglist.txt
+# echo "Creating list of all pacman installed packages in: /home/edward/.config/pacman/pacman_installed_pkglist.txt"
+# pacman -Qqen > /home/edward/.config/pacman/pacman_installed_pkglist.txt
+# cp /home/edward/.config/pacman/pacman_installed_pkglist.txt /home/edward/Dropbox/TW/SCRIPTS/pacman_installed_pkglist.txt
+# echo ""; echo ""
+
+# # installed packages not available in official repositories
+# echo "All installed packages not available in official repositories "
+# pacman -Qem
+# echo ""; echo ""
+
+
+# # creating list of all orphaned packages
+# echo "All orphaned packages: Packages that were installed as depedencies but are now not needed"
+# sudo pacman -Qdt
+# echo ""; echo ""
+# ########################################################
