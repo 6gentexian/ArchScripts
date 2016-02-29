@@ -1,56 +1,63 @@
-#!/bin/bash
-# Updated: Tues May 07 21:04:12 2013 by webmaster@askapache
-# @ http://www.askapache.com/shellscript/reflector-ranking-mirrors.html
-# Copyright (C) 2013 Free Software Foundation, Inc.
-#   This program is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation, either version 3 of the License, or
-#   (at your option) any later version.
-#   This program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
-#   You should have received a copy of the GNU General Public License
-#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#! /bin/bash
+#
+#  update.pacman.sh
+#
+#  This script will update packages downloaded from Arch
+#
+#  TODO:  Add ability to update private repos vs ABS
+#################################################################################
+# home dir of pacman scripts
+PACMAN_DIR="~/bin/PACMAN"
+# TMPDIR set in .bash_profile
+#################################################################################
 
-# if mirrors exists, cat it, otherwise create it
-function get_mirrors ()
+#################################################################################
+RESET='\e[0m'           # Text Reset
+BRed='\e[1;31m'         # Red
+BGreen='\e[1;32m'       # Green
+BYellow='\e[1;33m'      # Yellow
+BBlue='\e[1;34m'        # Blue
+#################################################################################
+UPDATE=""
+prYellow()
 {
-    if [[ -s $MIRRORS ]]; then
-	cat $MIRRORS;
-    else
-	curl -LksS -o - 'https://www.archlinux.org/mirrors/status/json/' | sed 's,{,\n{,g' | sed -n '/rsync/d; /pct": 1.0/p' | sed 's,^.*"url": "\([^"]\+\)".*,\1,g' > $MIRRORS
-	cat $MIRRORS;
-    fi
+    echo
+    printf "${BYellow}$1${RESET}\n"
+    echo
 }
-function get_core_urls ()
+prRed()
 {
-    get_mirrors | sed "s,$,core/os/${ARCH}/core.db.tar.gz,g"
+    echo
+    printf "${BRed}$1${RESET}\n"
+    echo
 }
-function get_gcc_urls ()
+prBlue()
 {
-    get_mirrors | sed "s,$,core/os/${ARCH}/${GCC_URL},g"
+    echo
+    printf "${BBlue}$1${RESET}\n"
+    echo
+}
+prGreen()
+{
+    echo
+    printf "${BGreen}$1${RESET}\n"
+    echo
 }
 
-# rm tmp file on exit
-trap "exitcode=\$?; (rm -f \$MIRRORS 2>/dev/null;) && exit \$exitcode" 0;
-trap "exit 1" 1 2 13 15;
+# force refresh and sync all repositories
+prGreen "Refresh, sync, and update all packages"
+sudo pacman -Syyu
+echo; echo
 
-# file containing mirror urls
-MIRRORS=`(mktemp -t reflector-mirrorsXXXX) 2>/dev/null` && test -w "$MIRRORS" || MIRRORS=~/reflector.mirrorsXXX
+# installed packages not available in official repositories, -m, for foreign packages
+prYellow "All installed packages *NOT* available in official repositories "
+pacman -Qem
+echo; echo
 
-# arch
-ARCH=`(uname -m) 2>/dev/null` || ARCH=x86_64
-
-# the gcc file
-GCC_URL=$( curl -LksSH --url ftp://ftp.archlinux.org/core/os/${ARCH}/ 2>/dev/null | sed -n 's/^.*\ \(gcc-[0-9]\+.*.tar.xz.sig\)\ -.*$/\1/gp' );
-
-
-# faster as primarily used to pre-resolve dns for 2nd core test
-{
-    get_gcc_urls | xargs -I'{}' -P40 curl -Lks -o /dev/null -m 3 --connect-timeout 4 --retry 0 --no-keepalive -w '%{time_total}@%{speed_download}@%{url_effective}\n' --url '{}' | sort -t@ -k2 -nr | head -n 20 | cut -d'@' -f3 | sed 's,core/os/'"${ARCH}/${GCC_URL}"',$repo/os/$arch,g'
-    get_core_urls | xargs -I'{}' -P10 curl -Lks -o /dev/null -m 5 --connect-timeout 4 --retry 0 --no-keepalive -w '%{time_total}@%{speed_download}@%{url_effective}\n' --url '{}' | sort -t@ -k2 -nr | head -n 20 | cut -d'@' -f3 | sed 's,core/os/'"${ARCH}"'/core.db.tar.gz,$repo/os/$arch,g'
-} | sed 's,^,Server = ,g' | awk '{ if (!h[$0]) { print $0; h[$0]=1 } }'
+# creating list of all orphaned packages
+prYellow "All orphaned packages: \nPackages installed as depedencies but are now neither dependencies nor optional."
+pacman -Qdt; echo ""; echo ""
 
 
-exit $?;
+prGreen "Upgrade complete!!"
+#################################################################################
