@@ -111,7 +111,31 @@ echo; echo
 prRed "All orphaned packages: \nPackages installed as depedencies but are now neither dependencies nor optional."
 #pacman -Qdt;
 echo; echo
+#############
+# list only optional deps that are installed:   (comm -13 <(pacman -Qdtq) <(pacman -Qdttq))
+# Check changelogs easily
+# When maintainers update packages, commits are often commented in a useful fashion. Users can quickly check these from the command line by installing paclogAUR. This utility lists recent commit messages for packages from the official repositories or the AUR, by using paclog package
+#############
 
+###############
+# ignoregrp="base base-devel"
+# ignorepkg=""
 
+# comm -23 <(pacman -Qqt | sort) <(echo $ignorepkg | tr ' ' '\n' | cat <(pacman -Sqg $ignoregrp) - | sort -u)
+
+# For list with descriptions for packages:
+
+# expac -HM "%-20n\t%10d" $( comm -23 <(pacman -Qqt|sort) <(pacman -Qqg base base-devel|sort) )
+
+# Back-up the pacman database
+# The following command can be used to back up the local pacman database:
+
+# $ tar -cjf pacman_database.tar.bz2 /var/lib/pacman/local
+
+# Store the backup pacman database file on one or more offline media, such as a USB stick, external hard drive, or CD-R. See also Pacman tips#Backing up Local database with systemd for an alternative method.
+# The database can be restored by moving the pacman_database.tar.bz2 file into the / directory and executing the following command:
+
+# # tar -xjvf pacman_database.tar.bz2
+#####################
 prGreen "Sync/Upgrade complete!!"
 #################################################################################
