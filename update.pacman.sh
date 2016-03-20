@@ -2,25 +2,34 @@
 #
 #  update.pacman.sh
 #
-#  This script will update packages downloaded from Arch
+#  This script will:
+#    Update/sync repos and packages downloaded from Arch
+#    Create files containing the names of all packages
+#    installed on the local system
 #
 #  TODO:  Add ability to update private repos vs ABS
+#         test for and install pacmatic
+#         add option to delete orphaned packages
 #################################################################################
 # home dir of pacman scripts
-PACMAN_DIR="~/bin/PACMAN"
-# TMPDIR set in .bash_profile
-PACK_ALL=""
-PACK_PAC_ALL=""
-PACK_FOR_ALL=""
-# -Q
-# List all foreign packages (typically manually downloaded and installed): pacman -Qm .
-# List all native packages (installed from the sync database(s)): pacman -Qn .
-PACK_INSTALL=""
-PACK_INSTALL_PAC=""
-PACK_INSTALL_FOR=""
-# List all explicitly installed packages: pacman -Qe .
-# To list explicitly installed packages available in the official repositories: -Qen
-# To list explicitly installed packages not available in official repositories: -Qem
+PACMAN_USER_SCRIPT_DIR="~/bin/PACMAN"
+PACMAN_USER_CONFIG_DIR="~/.config/pacman"
+# n.b. TMPDIR is set in .bash_profile
+DROPBOX_DIR="~/Dropbox/TW/SCRIPTS"
+
+#################################################################################
+# pacman -Q   List all local packages
+# pacman -Qm  List all foreign packages (typically manually downloaded and installed)
+# pacman -Qn  List all native packages (installed from official sync'd database(s))
+PKG_ALL=$PACMAN_USER_CONFIG_DIR"/all_pkgs.txt"
+PKG_PAC_ALL=$PACMAN_USER_CONFIG_DIR"/pacman_pkgs.txt"
+PKG_FOR_ALL=$PACMAN_USER_CONFIG_DIR"/for_pkgs.txt"
+# pacman -Qe  List all explicitly installed packages
+# pacman -Qe  List explicitly installed packages available in the official repos
+# pacman -Qe  List explicitly installed packages *not* available in official repos
+PKG_INSTALL=$PACMAN_USER_CONFIG_DIR"/all_installed_pkgs.txt"
+PKG_INSTALL_PAC=$PACMAN_USER_CONFIG_DIR"/pacman_installed_pkgs.txt"
+PKG_INSTALL_FOR=$PACMAN_USER_CONFIG_DIR"/for_installed_pkgs.txt"
 
 #################################################################################
 echo $TMPDIR
@@ -59,66 +68,50 @@ prGreen()
     echo
 }
 
-# force refresh and sync all repositories
-prGreen "Refresh, sync, and update all packages"
-#sudo pacman -Syyu
+# Refresh and sync all repositories and packages
+prGreen "Refresh, sync, and update all repos and packages"
+#sudo pacmatic -Syyu
 echo; echo
 
+prYellow "Updating the Arch Build System local package repo"
+# sudo abs
+echo; echo
+
+# make sure that cache is cleared
+prRed "Clearing cache of tarballs..."
+# sudo pacman -Sc
+echo; echo
+
+#################################################################################
+## Output files
+##
+# update the mirror list for pacman
+prYellow "Updating the mirrorlist: /etc/pacman.d/mirrorlist"
+# ~/bin/reflector.sh > $TMPDIR/mirrorlist
+# sudo mv $TMPDIR/mirrorlist /etc/pacman.d/mirrorlist
+echo; echo
+
+# backing up list of all installed packages
+prYellow "Creating list of all installed packages in: ~/.config/pacman/installed_pkglist.txt"
+# mkdir -p $PACMAN_USER_CONFIG_DIR
+# pacman -Qq > $PKG_ALL
+# cp $PKG_ALL  $DROPBOX_DIR  #~/Dropbox/TW/SCRIPTS/installed_pkglist.txt
+
+#  backup the current list of pacman installed packages: $ pacman -Qqen > pkglist.txt
+prYellow "Creating list of all pacman installed packages in: ~/.config/pacman/pacman_installed_pkglist.txt"
+# pacman -Qqen > $PKG_PAC_ALL
+# cp $PKG_PAC_ALL  $DROPBOX_DIR   #~/Dropbox/TW/SCRIPTS/pacman_installed_pkglist.txt
+
 # installed packages not available in official repositories, -m, for foreign packages
-prYellow "All installed packages *NOT* available in official repositories "
-#pacman -Qem
+prYellow "All installed foreign packages -- i.e. those *NOT* available in official repositories "
+#pacman -Qem > $PKG_FOR_ALL
 echo; echo
 
 # creating list of all orphaned packages
-prYellow "All orphaned packages: \nPackages installed as depedencies but are now neither dependencies nor optional."
-#pacman -Qdt; echo ""; echo ""
+prRed "All orphaned packages: \nPackages installed as depedencies but are now neither dependencies nor optional."
+#pacman -Qdt;
+echo; echo
 
 
-prGreen "Upgrade complete!!"
+prGreen "Sync/Upgrade complete!!"
 #################################################################################
-
-
-# echo "Updating the Arch Build System local packages"
-# sudo abs
-# echo ""; echo ""
-
-# # make sure that cache is cleared
-# echo "Clearing cache of tarballs..."
-# sudo pacman -Sc
-# echo ""; echo ""
-
-# # update the mirror list
-# echo "Updating the mirrorlist: /etc/pacman.d/mirrorlist"
-# /home/edward/bin/reflector.sh > /home/edward/TMP/mirrorlist
-# sudo mv /home/edward/TMP/mirrorlist /etc/pacman.d/mirrorlist
-# echo ""; echo ""
-
-# # force refresh and sync and update all packages
-# echo "Refresh, sync, and update all packages"
-# sudo pacmatic -Syyu
-# echo ""; echo ""
-
-# # backing up list of all installed packages
-# echo "Creating list of all installed packages in: /home/edward/.config/pacman/installed_pkglist.txt"
-# mkdir -p /home/edward/.config/pacman
-# pacman -Qq > /home/edward/.config/pacman/installed_pkglist.txt
-# cp /home/edward/.config/pacman/installed_pkglist.txt /home/edward/Dropbox/TW/SCRIPTS/installed_pkglist.txt
-# echo ""; echo ""
-
-# #  backup the current list of pacman installed packages: $ pacman -Qqen > pkglist.txt
-# echo "Creating list of all pacman installed packages in: /home/edward/.config/pacman/pacman_installed_pkglist.txt"
-# pacman -Qqen > /home/edward/.config/pacman/pacman_installed_pkglist.txt
-# cp /home/edward/.config/pacman/pacman_installed_pkglist.txt /home/edward/Dropbox/TW/SCRIPTS/pacman_installed_pkglist.txt
-# echo ""; echo ""
-
-# # installed packages not available in official repositories
-# echo "All installed packages not available in official repositories "
-# pacman -Qem
-# echo ""; echo ""
-
-
-# # creating list of all orphaned packages
-# echo "All orphaned packages: Packages that were installed as depedencies but are now not needed"
-# sudo pacman -Qdt
-# echo ""; echo ""
-# ########################################################
