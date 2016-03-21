@@ -10,6 +10,7 @@
 #  TODO:  Add ability to update private repos vs ABS
 #         test for and install pacmatic
 #         add option to delete orphaned packages
+#         add AUR - paclog to check on AUR updates
 #################################################################################
 # home dir of pacman scripts
 PACMAN_USER_SCRIPT_DIR="~/bin/PACMAN"
@@ -23,13 +24,13 @@ DROPBOX_DIR="~/Dropbox/TW/SCRIPTS"
 # pacman -Qn  List all native packages (installed from official sync'd database(s))
 PKG_ALL=$PACMAN_USER_CONFIG_DIR"/all_pkgs.txt"
 PKG_PAC_ALL=$PACMAN_USER_CONFIG_DIR"/pacman_pkgs.txt"
-PKG_FOR_ALL=$PACMAN_USER_CONFIG_DIR"/for_pkgs.txt"
+PKG_FOR_ALL=$PACMAN_USER_CONFIG_DIR"/foreign_pkgs.txt"
 # pacman -Qe  List all explicitly installed packages
-# pacman -Qe  List explicitly installed packages available in the official repos
-# pacman -Qe  List explicitly installed packages *not* available in official repos
+# pacman -Qen  List explicitly installed packages available in the official repos
+# pacman -Qem  List explicitly installed packages *not* available in official repos
 PKG_INSTALL=$PACMAN_USER_CONFIG_DIR"/all_installed_pkgs.txt"
 PKG_INSTALL_PAC=$PACMAN_USER_CONFIG_DIR"/pacman_installed_pkgs.txt"
-PKG_INSTALL_FOR=$PACMAN_USER_CONFIG_DIR"/for_installed_pkgs.txt"
+PKG_INSTALL_FOR=$PACMAN_USER_CONFIG_DIR"/foreign_installed_pkgs.txt"
 
 #################################################################################
 echo $TMPDIR
@@ -68,12 +69,30 @@ prGreen()
     echo
 }
 
-# Refresh and sync all repositories and packages
-prGreen "Refresh, sync, and update all repos and packages"
-#sudo pacmatic -Syyu
+# Refresh and sync all repositories
+prGreen "Refresh, sync, and update all repos"
+#sudo pacman -Syy
 echo; echo
 
-prYellow "Updating the Arch Build System local package repo"
+# Update all packages
+prGreen "Update all packages ---------------------------"
+echo
+
+if [ -f /usr/bin/pacmatic ]; then
+    sudo pacmatic -Su
+else
+    while true; do
+        read -p "Would you like to use pacmatic to update (recommended)?" yn
+        case $yn in
+            [Yy]* ) sudo pacman -S pacmatic; sudo pacmatic -Su; break;;
+            [Nn]* ) sudo pacman -Su; exit;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+fi
+echo; echo
+
+prGreen "Updating the Arch Build System local package repo"
 # sudo abs
 echo; echo
 
@@ -86,56 +105,75 @@ echo; echo
 ## Output files
 ##
 # update the mirror list for pacman
-prYellow "Updating the mirrorlist: /etc/pacman.d/mirrorlist"
+prGreen "Updating the mirrorlist: /etc/pacman.d/mirrorlist"
 # ~/bin/reflector.sh > $TMPDIR/mirrorlist
 # sudo mv $TMPDIR/mirrorlist /etc/pacman.d/mirrorlist
 echo; echo
 
 # backing up list of all installed packages
-prYellow "Creating list of all installed packages in: ~/.config/pacman/installed_pkglist.txt"
+prBlue "Creating list of all installed packages in: ~/.config/pacman/all_pkgs.txt"
 # mkdir -p $PACMAN_USER_CONFIG_DIR
 # pacman -Qq > $PKG_ALL
-# cp $PKG_ALL  $DROPBOX_DIR  #~/Dropbox/TW/SCRIPTS/installed_pkglist.txt
+# mv $PKG_ALL  $DROPBOX_DIR  #~/Dropbox/TW/SCRIPTS/all_pkgs.txt
+echo; echo
 
-#  backup the current list of pacman installed packages: $ pacman -Qqen > pkglist.txt
-prYellow "Creating list of all pacman installed packages in: ~/.config/pacman/pacman_installed_pkglist.txt"
-# pacman -Qqen > $PKG_PAC_ALL
-# cp $PKG_PAC_ALL  $DROPBOX_DIR   #~/Dropbox/TW/SCRIPTS/pacman_installed_pkglist.txt
+#  backup the current list of official repo packages
+prBlue "Creating list of all packages from the official repos: ~/.config/pacman/pacman_pkgs.txt"
+# pacman -Qqn > $PKG_PAC_ALL
+# mv $PKG_PAC_ALL  $DROPBOX_DIR
+echo; echo
+
+# backup current list of packages not available in official repositories, -m, for foreign packages
+prBlue "Creating list of all foreign packages -- i.e. those *NOT* available in official repositories"
+prYellow "in:  ~/.config/pacman/foreign_pkgs.txt"
+#pacman -Qqm > $PKG_FOR_ALL
+# mv $PKG_FOR_ALL  $DROPBOX_DIR
+echo; echo
+
+#  backup the current list of pacman installed packages
+prBlue "Creating list of all pacman installed packages in: ~/.config/pacman/pacman_installed_pkgs.txt"
+# pacman -Qqen > $PKG_INSTALL_PAC
+# mv $PKG_INSTALL_PAC  $DROPBOX_DIR
+echo; echo
 
 # installed packages not available in official repositories, -m, for foreign packages
-prYellow "All installed foreign packages -- i.e. those *NOT* available in official repositories "
-#pacman -Qem > $PKG_FOR_ALL
+prBlue "All installed foreign packages -- i.e. those *NOT* available in official repositories"
+prBlue "in:  ~/.config/pacman/foreign_installed_pkgs.txt"
+#pacman -Qqem > $PKG_INSTALL_FOR
+# mv $PKG_INSTALL_FOR  $DROPBOX_DIR
 echo; echo
 
 # creating list of all orphaned packages
 prRed "All orphaned packages: \nPackages installed as depedencies but are now neither dependencies nor optional."
 #pacman -Qdt;
 echo; echo
+
+prRed "The following packages are optional for some installed package, but are otherwise not needed"
+(comm -13 <(pacman -Qdtq) <(pacman -Qdttq))
+echo; echo
+
+
 #############
-# list only optional deps that are installed:   (comm -13 <(pacman -Qdtq) <(pacman -Qdttq))
 # Check changelogs easily
-# When maintainers update packages, commits are often commented in a useful fashion. Users can quickly check these from the command line by installing paclogAUR. This utility lists recent commit messages for packages from the official repositories or the AUR, by using paclog package
+# When maintainers update packages, commits are often commented in a useful fashion.
+# Users can quickly check these from the command line by installing paclogAUR.
+# This utility lists recent commit messages for packages from the official repositories
+# or the AUR, by using paclog package
 #############
 
-###############
-# ignoregrp="base base-devel"
-# ignorepkg=""
 
-# comm -23 <(pacman -Qqt | sort) <(echo $ignorepkg | tr ' ' '\n' | cat <(pacman -Sqg $ignoregrp) - | sort -u)
-
-# For list with descriptions for packages:
-
-# expac -HM "%-20n\t%10d" $( comm -23 <(pacman -Qqt|sort) <(pacman -Qqg base base-devel|sort) )
-
-# Back-up the pacman database
+#################################################################################
+# Back-up the pacman database ---------------------------------------------------
+#
 # The following command can be used to back up the local pacman database:
-
+#
 # $ tar -cjf pacman_database.tar.bz2 /var/lib/pacman/local
-
-# Store the backup pacman database file on one or more offline media, such as a USB stick, external hard drive, or CD-R. See also Pacman tips#Backing up Local database with systemd for an alternative method.
-# The database can be restored by moving the pacman_database.tar.bz2 file into the / directory and executing the following command:
-
-# # tar -xjvf pacman_database.tar.bz2
-#####################
+#
+#
+# n.b. The database can be restored by moving the pacman_database.tar.bz2
+#        file into the / directory and executing the following command:
+#
+# $ sudo tar -xjvf pacman_database.tar.bz2
+################################################################################
 prGreen "Sync/Upgrade complete!!"
 #################################################################################
