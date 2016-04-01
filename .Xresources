@@ -1,0 +1,23 @@
+!! Xterm ----------------------------------------------------------------------
+xterm*VT100.geometry:	120x67+750+0
+
+
+xterm*utf8:             1
+xterm*faceName:         Terminus:style=Regular:size=8
+xterm*font:             -*-terminus-medium-*-*-*-18-*-*-*-*-*-iso10646-*
+xterm*foreground:       white
+xterm*background:       black
+xterm*termName:         xterm-256color
+xterm*saveLines:        91200
+xterm*rightScrollBar:   true
+xterm*toolBar:          false
+xterm*locale:           true
+xterm*metaSendsEscape:  true
+xterm*dynamicColors:    true
+xterm*cursorColor:      yellow
+xterm*cursorBlink:      true
+xterm*scrollKey:        true
+
+
+Xcursor*theme: vanilla-dmz
+Xcursor*size: 12
