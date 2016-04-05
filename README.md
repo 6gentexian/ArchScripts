@@ -1,59 +1,70 @@
-# Summary
-
-  This suite of scripts provides a basic configuration for emacs v24 on
-  Arch linux.  The root emacs file, `~/.emacs` calls additional files that
-  provide themes, formatting, hotkeys, the repository info for installs
-  and upgrades, various hooks for different editing modes and a file that
-  provides nice modeline formatting, based on:
-  [http://amitp.blogspot.sg/2011/08/emacs-custom-mode-line.html]
-
-# Files
-
-*    .emacs
-**        custom.el
-**        my-packages.el
-**        my-modes.el
-**        my-modeline.el
-
-# Dependencies
-
-Arch - emacs 24.5-2
-
-# Use
-
-Place .emacs in your home directory (~/)
-Place dependencies in separate folder `~/.emacs.d/`
+##  README
 
 
-# NB   
-
-In order to test changes in the various emacs scripts, place them in
-a dev folder and run the following command, e.g. when working on
-the modeline script:
-```
- $ emacs -q -l path/to/test/init/script scriptname.el
-```		
-    where
-```
-      -q            				// runs emacs with no init script
-      -l path/to/test/init/script 	// links emacs to the testing init script
-      scriptname.el 				// the test file you're editing
-```
-For example,
-```
- $ emacs -q -l ~/DEV/EMACS/.emacs my-modeline.el
-```
-will edit my new modeline script using the .emacs file in my DEV folder
+##  Synopsis
+This suite of scripts provides basic config files for an ARCH linux system.  Also, there are two scripts that work together to improve the package manager, pacman.
 
 
-If something goes wonky with one of the files or future customizations,
- use the debug mode to debug the (e.g. .emacs) file
-```
- $ emacs ~/.emacs --debug-init
-```
+##  Files
+```.inputrc```
+From LFS: Inputrc deals with the mapping of the keyboard for certain situations. This file is the start-up file used by readline, the input related library used by bash and most other shells.
+```inputrc```
+System file
 
-# TODO
+```.Xauthority```
+From linuxquestions.org:  It's a file found in each user's home dir that is used to store credentials used by xauth for authentication of X sessions.
+
+```.xinitrc```
+From the Arch wiki:   This file is a shell script read by xinit and by its front-end startx. It is mainly used to execute desktop environments, window managers and other programs when starting the X server.
+```xinitrc```
+System file
+
+```.Xresources```
+From the Arch wiki: This file is a user-level configuration dotfile. It can be used to set X resources, i.e. configuration parameters for X client applications.  They can do many operations, including:
+* defining terminal colours
+* configuring terminal preferences
+* setting DPI
+* antialiasing
+* hinting and other X font settings
+* changing the Xcursor theme
+* theming xscreensaver
+* altering preferences on low-level X applications
+
+```.Xdefaults```
+lthough the use of this file is deprecated in Arch, setting user specific configs (e,g, for a laptop vs a desktop for the size and placement of an xterm window) may come in handy.
+* ```.Xdefaults-curly``` - host specific file (Acer chromebook)
+* ```.Xdefaults-moe``` - host specfici file (desktop)
+
+```update.pacman.sh```
+This script will:
+* Update/sync repos and packages downloaded from Arch
+* Create files containing the names of all packages installed locally
+
+* ```reflector.sh```
+Bash script replicating original code written in python? I can't remember where I got this but kudos to the author.
 
 
-# License
+##  Dependencies
+*   curl 7.47.1
+*   sed (GNU sed) 4.2.2
+*   Pacman v5.0.1 - libalpm v10.0.1
+*   xrdb 1.1.0
+*   xorg-xinit 1.3.4-3
+*   xorg-xauth 1.0.9-1
+*   readline 6.3.008-3
 
+
+##  Use
+All of the dot files are placed in ```~/``` , no sourcing etc is needed.
+For pacman
+*  Place reflector.sh and update.pacman.sh somewhere in your ```$PATH```, e.g. ```~/bin```
+*  ```$ ./update.pacman.sh```
+
+
+##  NB
+All generic functions used are in .bashrc. They are commented out at the end of this file if you don't want to place them in your startup file.
+```$TMPDIR``` is set in ```.bash_profile``` or ```.bashrc```
+
+
+##  TODOs
+Add ability to update private repos vs ABS
