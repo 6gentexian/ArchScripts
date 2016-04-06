@@ -1,0 +1,46 @@
+#!/bin/bash
+################################################################################
+# CONFIG_FUNC_BUILDER
+# Use:
+# bash CONFIG_FUNC_BUILDER 'create_cat()' 2 ~/.profile 0 ~/test_SelfScript.sh
+#
+#   create_cat()           <- 'tag' to know where to add FUNCTION's text
+#   2                      <- Number of lines from 'tag' to insert fileName
+#   ~/.profile             <- FUNCTION to add to master script
+#   0                      <- Number of lines (+1) from fileName to insert text
+#   ~/test_SelfScript.sh   <- Name of master script
+#
+# ./CONFIG_FUNC_BUILDER 'CONFIG .emacs' 1 ~/.profile 0 ~/test_SelfScript.sh
+#### test_SelfScript.sh --------------------------------------------------- ####
+# create_cat(){
+#
+# cat > $1 << 'EOF'
+#
+# EOF
+#
+# print_title "CONFIG .emacs --------------------------------------------------"
+# cat > $1 << 'EOF'
+#
+#EOF
+################################################################################
+# Thus:
+# inputs: $1 == create_cat()
+#         $2 == Vertical OFFSET from $1 line
+#         $3 == /home/edward/.profile
+#         $4 == Vertical OFFSET from $3 line to insert text (def = skip 1 line)
+#         $5 == /home/edward/test_SelfScript.sh
+################################################################################
+#
+# Include "$1" b/c input arg may have spaces in the search string 
+fileNameLine=$(grep -n "$1" $5 | cut -d ":" -f 1)
+fileNameLine=$((fileNameLine+$2))
+
+fileInsertLine=$((fileNameLine+$4))
+
+
+## line to sub "$1" for the /path/filename
+sed -i -e "${fileNameLine}s~\$1~$3~" $5
+
+## line to insert the file's content
+sed -i -e "${fileInsertLine}r $3" $5
+

@@ -1,0 +1,44 @@
+Files:
+	CONFIG_SETUP
+	CONFIG_FUNCS_TEMPLATE
+	CONFIG_FUNCS_BUILDER
+	CONFIG_FUNCS_CREATOR
+
+CONFIG_FUNCS_CREATOR:	Uses CONFIG_FUNCS_BUILDER to create CONFIG_FUNCS
+CONFIG_SETUP:			Master script uses CONFIG_FUNCS to install all needed
+						files, folders, packages for a fully operational new install.
+CONFIG_FUNCS_TEMPLATE:	Empty template filled out via CONFIG_FUNCS_BUILDER and
+						called from CONFIG_FUNCS_CREATOR.
+			Once filled out, we'll cp CONFIG_FUNCS_TEMPLATE CONFIG_FUNCS
+CONFIG_FUNCS_BUILDER:	sed scripts that insert existing files into CONFIG_FUNCS
+
+
+Usage:
+ON HOST
+1) Go to scripts' folder and create CONFIG_FUNCS -file with all current settings:
+HOST $ cd ~/ARCH/SRC_CONFIG
+HOST $ ./CONFIG_FUNCS_CREATOR
+# There's 1 problemed script - openbox-pipmenu
+HOST $ emacs CONFIG_FUNCS
+# Goto ~ 1942 and make the first 'EOF' 'EEOF'. We'll try and improvise
+#  around this later. Save, exit. Rem to chmod +x openbox-pipemenu
+
+2) Use scp to Copy CONFIG_FUNCS and CONFIG_SETUP to home dir on new machine
+# scp -P port FROM                                    TO
+# scp -P 1235 myuser@remoteserver:/REMOTE_FILE  ~/local_dir
+# DEST $ scp -P port edward@HOST_IP:/home/edward/ARCH/SRC_CONFIG/CONFIG_SETUP ~/
+DEST $ cd ~/
+DEST $ sudo pacman -Syyu
+DEST $ sudo systemctl start sshd.service
+DEST $ sudo systemctl status sshd.service
+DEST $ scp -P 2222 edward@:/home/edward/ARCH/SRC_CONFIG/CONFIG_SETUP ~/
+DEST $ scp -P 2222 edward@:/home/edward/ARCH/SRC_CONFIG/CONFIG_FUNCS ~/
+
+
+ON DESTINATION
+1) Use CONFIG_FUNCS to create user files and d/l packages for a
+   REGULAR/REG or MINIMAL/MIN install:
+DEST $ ls -al
+DEST $ chmod +x CONFIG_SETUP; chmod +x CONFIG_FUNCS  // May not be needed
+# Edit CONFIG_SETUP as needed
+DEST $ ./CONFIG_SETUP min

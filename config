@@ -1,0 +1,165 @@
+[global_config]
+  window_state = maximise
+  handle_size = 2
+  enabled_plugins = LaunchpadBugURLHandler, TerminalExporter, LaunchpadCodeURLHandler, APTURLHandler, LayoutManager
+  suppress_multiple_term_dialog = True
+  tab_position = hidden
+  inactive_color_offset = 0.79
+[keybindings]
+[profiles]
+  [[default]]
+    scrollbar_position = hidden
+    use_system_font = False
+    font = Monospace 8
+    background_darkness = 0.8
+    scrollback_lines = 75000
+    background_type = transparent
+    background_image = ~/Dropbox/Photos/desktops/crossfitchicks_2.jpg
+    cursor_color = yellow
+    show_titlebar = False
+    copy_on_selection = True
+    cursor_blink = False
+    scrollback_infinite = True
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+    #command = top -u edward
+    [[[window0]]]
+      type = Window
+      parent = ""
+  [[edward2]]
+    [[[window0]]]
+      position = 0:0
+      type = Window
+      order = 0
+      parent = ""
+      size = 1600, 870
+    
+    [[[child1]]]
+      position = 634
+      type = HPaned
+      ratio = 0.8
+      order = 0
+      parent = window0
+      titlebars = False
+    
+    [[[terminal5]]]
+      profile = default
+      type = Terminal
+      order = 1
+      parent = child1
+      titlebars = False
+    
+    [[[child2]]]
+      position = 262
+      type = VPaned
+      order = 0
+      parent = child1
+    
+    [[[terminal3]]]
+      profile = default
+      type = Terminal
+      order = 0
+      parent = child2
+    
+    [[[terminal4]]]
+      profile = default
+      type = Terminal
+      order = 1
+      parent = child2
+  [[edward]]
+    [[[child0]]]
+      position = 0:0
+      type = Window
+      order = 0
+      parent = ""
+      size = 1600, 870
+    [[[child1]]]
+      position = 800
+      type = HPaned
+      ratio = 0.8
+      order = 0
+      parent = child0
+    [[[child2]]]
+      position = 244
+      type = VPaned
+      ratio = 0.8
+      order = 0
+      parent = child1
+    [[[terminal3]]]
+      profile = default
+      type = Terminal
+      order = 0
+      parent = child2
+    [[[terminal5]]]
+      profile = default
+      type = Terminal
+      order = 1
+      parent = child1
+    [[[terminal4]]]
+      profile = default
+      type = Terminal
+      order = 1
+      parent = child2
+  [[ebg]]
+    [[[child0]]]
+      position = 0:25
+      type = Window
+      order = 0
+      parent = ""
+      size = 1600, 875
+    [[[child1]]]
+      labels = None, None
+      type = Notebook
+      order = 0
+      parent = child0
+    [[[child2]]]
+      position = 800
+      type = HPaned
+      order = 0
+      parent = child1
+    [[[child3]]]
+      position = 437
+      type = VPaned
+      order = 0
+      parent = child2
+    [[[child7]]]
+      position = 778
+      type = HPaned
+      order = 1
+      parent = child1
+    [[[terminal5]]]
+      profile = default
+      type = Terminal
+      order = 1
+      parent = child3
+      command = ""
+    [[[terminal4]]]
+      profile = default
+      type = Terminal
+      order = 0
+      parent = child3
+      command = ""
+    [[[terminal6]]]
+      profile = default
+      type = Terminal
+      order = 1
+      parent = child2
+      command = ""
+    [[[terminal9]]]
+      profile = default
+      type = Terminal
+      order = 1
+      parent = child7
+      command = ""
+    [[[terminal8]]]
+      profile = default
+      type = Terminal
+      order = 0
+      parent = child7
+      command = ""
+[plugins]
+
