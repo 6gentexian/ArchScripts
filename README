@@ -2,30 +2,79 @@
 #  README
 #
 #
-#
-#  This suite of scripts provides a simple interface to update packages on
-#    Arch Linux.
-#
-#  ARCH DEPENDENCIES:	pacman
-#			pacmatic (optional)
-#
-#  Files:  update.pacman.sh
-#	   -- reflector.sh
+#  This suite of scripts provides basic config files for an ARCH linux system.
+#  Also, there are two scripts that work together to improve the package manager,
+#  pacman.
 #
 #
+#  Files
+#    .inputrc - From LFS: Inputrc deals with the mapping of the keyboard for
+#      certain situations. This file is the start-up file used by readline,
+#      the input related library used by bash and most other shells.
+#    inputrc - System version of .inputrc
+#
+#    .Xauthority - From linuxquestions.org:  It's a file found in each user's
+#      home dir that is used to store credentials used by xauth for
+#      authentication of X sessions.
+#
+#    .xinitrc - From the Arch wiki:   This file is a shell script read by xinit
+#      and by its front-end startx. It is mainly used to execute desktop
+#      environments, window managers and other programs when starting the
+#      X server.
+#    xinitrc - System file
+#
+#    .Xresources - From the Arch wiki; This file is a user-level configuration
+#      dotfile. It can be used to set X resources, i.e. configuration parameters
+#      for X client applications.  They can do many operations, including:
+#      defining terminal colours, configuring terminal preferences, setting DPI,
+#      antialiasing, hinting and other X font settings, changing the Xcursor
+#      theme, theming xscreensaver, altering preferences on low-level
+#      X applications.
+#
+#    .Xdefaults - although the use of this file is deprecated in Arch, setting
+#      user specific configs (e,g, for a laptop vs a desktop for the size and
+#       placement of an xterm window) may com in handy.
+#      .Xdefaults-curly - host specific file (Acer chromebook)
+#      .Xdefaults-moe - host specfici file (desktop)
 #
 #
+#    update.pacman.sh - This script will:
+#      Update/sync repos and packages downloaded from Arch
+#      Create files containing the names of all packages installed locally
+#
+#      All generic functions used are in .bashrc. They are commented out at
+#        the end of this file if you don't want to place them in your startup file.
+#      $TMPDIR is set in .bash_profile
+#
+#      reflector.sh - bash script replicating original code written in python?
+#                     I can't remember where I got this but kudos to the author.
 #
 #
+#  DEPENDENCIES
+#    curl 7.47.1
+#    sed (GNU sed) 4.2.2
+#    Pacman v5.0.1 - libalpm v10.0.1
+#    xrdb 1.1.0
+#    xorg-xinit 1.3.4-3
+#    xorg-xauth 1.0.9-1
+#    readline 6.3.008-3
 #
-#  USE: Make sure that all scripts are executable, and folder is on your $PATH:
-#	     $ cd ~/bin/PACMAN			       # cd into script folder
-#	     $ chmod +x update.pacman.sh reflector.sh
-#	     $ echo $PATH
+#
+#  USE:  All of the dot files are placed in ~/ , no sourcing etc is needed.
+#
+#        For pacman:
+#          Make sure that all scripts are executable, and folder is on your $PATH:
+#          $ cd ~/bin/PACMAN       # cd into script folder
+#          $ chmod +x update.pacman.sh reflector.sh
+#          $ echo $PATH
+#          $ ./update.pacman.sh
 #
 #
-#  $ update.pacman.sh
+#  NB: All generic functions used are in .bashrc. They are commented out at
+#      the end of this file if you don't want to place them in your startup file.
+#      $TMPDIR is set in .bash_profile or .bashrc
 #
-#  NB:  You may want to add: alias UPDATE="update.pacman.sh" to your .bashrc
+#
+#  TODOs:   Add ability to update private repos vs ABS
 #
 #################################################################################

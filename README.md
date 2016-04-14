@@ -1,31 +1,73 @@
-## Synopsis
+##  README
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
 
-## Code Example
+##  Summary
+This suite of scripts provides basic config files for an ARCH linux system.  Also, there are two scripts that work together to improve the package manager, pacman.
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
 
-## Motivation
+##  Files
+```.inputrc```
+From LFS: Inputrc deals with the mapping of the keyboard for certain situations. This file is the start-up file used by readline, the input related library used by bash and most other shells.
+```inputrc```
+System file
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+```.Xauthority```
+From linuxquestions.org:  It's a file found in each user's home dir that is used to store credentials used by xauth for authentication of X sessions.
 
-## Installation
+```.xinitrc```
+From the Arch wiki:   This file is a shell script read by xinit and by its front-end startx. It is mainly used to execute desktop environments, window managers and other programs when starting the X server.
+```xinitrc```
+System file
 
-Provide code examples and explanations of how to get the project.
+```.Xresources```
+From the Arch wiki: This file is a user-level configuration dotfile. It can be used to set X resources, i.e. configuration parameters for X client applications.  They can do many operations, including:
+* defining terminal colours
+* configuring terminal preferences
+* setting DPI
+* antialiasing
+* hinting and other X font settings
+* changing the Xcursor theme
+* theming xscreensaver
+* altering preferences on low-level X applications
 
-## API Reference
+```.Xdefaults```
+lthough the use of this file is deprecated in Arch, setting user specific configs (e,g, for a laptop vs a desktop for the size and placement of an xterm window) may come in handy.
+* ```.Xdefaults-curly``` - host specific file (Acer chromebook)
+* ```.Xdefaults-moe``` - host specfici file (desktop)
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+```update.pacman.sh```
+This script will:
+* Update/sync repos and packages downloaded from Arch
+* Create files containing the names of all packages installed locally
 
-## Tests
+* ```reflector.sh```
+Bash script replicating original code written in python? I can't remember where I got this but kudos to the author.
 
-Describe and show how to run the tests with code examples.
 
-## Contributors
+##  Dependencies
+*   curl 7.47.1
+*   sed (GNU sed) 4.2.2
+*   Pacman v5.0.1 - libalpm v10.0.1
+*   xrdb 1.1.0
+*   xorg-xinit 1.3.4-3
+*   xorg-xauth 1.0.9-1
+*   readline 6.3.008-3
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
 
-## License
+##  Use
+All of the dot files are placed in ```~/``` , no sourcing etc is needed.
+For pacman
+*  Place reflector.sh and update.pacman.sh somewhere in your ```$PATH```, e.g. ```~/bin```
+*  Make sure that all scripts are executable, and folder is on your ```$PATH```:
+*  ```$ cd ~/bin/PACMAN       # cd into script folder```
+*  ```$ chmod +x update.pacman.sh reflector.sh```
+*  ```$ ./update.pacman.sh```
 
-A short snippet describing the license (MIT, Apache, etc.)
+
+##  NB
+All generic functions used are in .bashrc. They are commented out at the end of this file if you don't want to place them in your startup file.
+```$TMPDIR``` is set in ```.bash_profile``` or ```.bashrc```
+
+
+##  TODOs
+Add ability to update private repos vs ABS
