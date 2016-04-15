@@ -1,0 +1,162 @@
+#!/bin/bash
+#################################################################################
+#  CONFIG_SETUP
+#  This script preserves the original home directory and configures
+#  several elements in the users environment, including:
+#    Window manager:    openbox
+#    File manager:      SpaceFM
+#    Shell:             bash
+#    Editor:            emacs-nox
+#
+#  Useage: On DESTINATION machine, copy CONFIG_SETUP and CONFIG_FUNCS from HOST
+#          to DESTINATION home dir, then run setup.
+#  $ cd ~/
+#  $ CONFIG_SETUP min  **OR** CONFIG_SETUP reg
+#################################################################################
+# KEY DIRS
+HOME_DIR="/home/edward"
+ORIG_CONFIG_DIR=$HOME_DIR"/ARCH/ORIG_CONFIG"
+SRC_CONFIG_DIR=$HOME_DIR"/ARCH/SRC_CONFIG"
+
+#################################################################################
+# MAKE SURE USER SPECIFIES REGULAR OR MIN INSTALL
+arg="$1"
+arg="${arg^^}"
+
+if [ "$arg" = "MIN" ] || [ "$arg" = "MINIMAL"  ]; then
+    MIN_INSTALL=true
+elif [ "$arg" = "REG" ] || [ "$arg" = "REGULAR"  ]; then
+    MIN_INSTALL=false
+else
+    printf "${BRed}ERROR${RESET}\n"
+    echo "Input must be REG or MIN"
+    exit 1
+fi
+
+#################################################################################
+
+cd $HOME_DIR
+
+#################################################################################
+# PRESERVE ORIGINAL SETTINGS ON DESTINATION MACHINE
+# CREATE/POPULATE CONFIGURATION DIRECTORIES
+if [ ! -f $ORIG_CONFIG_DIR"/ORIG_HOME_DIR.tar.gz" ]; then
+
+    echo
+    echo "INITIAL SETUP: Compress original directory and move to:"
+    echo "$ORIG_CONFIG_DIR"
+    echo
+
+    tar -zcvf ORIG_HOME_DIR.tar.gz $HOME_DIR --exclude=CONF*
+
+    mkdir -p $ORIG_CONFIG_DIR
+    mkdir -p $SRC_CONFIG_DIR"/ARCHIVE"
+    mkdir -p $SRC_CONFIG_DIR"/DEV"
+
+    mv ~/ORIG_HOME_DIR.tar.gz $ORIG_CONFIG_DIR
+
+    # MOVE CONFIG SCRIPTS TO THE SCR DIR
+    mv ~/CONF* $SRC_CONFIG_DIR
+  ###############################################################################
+  #  Create common directories
+
+    mkdir -p ~/bin ~/Desktop ~/DEV ~/Downloads
+    mkdir -p ~/TMP ~/Dropbox ~/.config ~/PYTHON
+
+    if [ "$MIN_INSTALL" = true ]; then
+	echo
+	printf "${BRed}Minimal install${RESET} -- only installing:\n"
+	printf "\t${BWhite}~/bin\t~/Desktop\t~/DEV\t~/Downloads${RESET}\n"
+	printf "\t${BWhite}~/RESEARCH\t~/TMP\t~/Dropbox\t~/.config${RESET}\n"
+	echo
+
+    elif [ "$MIN_INSTALL" = false ]; then
+	echo
+	printf "${BRed}Full install${RESET} -- installing:\n"
+	printf "\t${BWhite}~/bin\t~/Desktop\t~/DEV\t~/Downloads${RESET}\n"
+	printf "\t${BWhite}~/RESEARCH\t~/TMP\t~/Dropbox\t~/.config${RESET}\n"
+
+	printf "\t${BWhite}~/JAVA\t~/Public\t~/PYTHON\t~/LaTeX${RESET}\n"
+	printf "\t${BWhite}~/R\t~/LAPTOP\t~/R_LIBS\t~/.conky${RESET}\n"
+	echo
+
+	mkdir -p ~/JAVA ~/Public ~/LaTeX
+	mkdir -p ~RESEARCH ~/R ~/LAPTOP ~/R_LIBS ~/.conky
+
+    fi
+
+  ###############################################################################
+
+else
+    echo
+    printf "${BBlue}Initial setup complete!${RESET}\n"
+    echo
+fi
+#################################################################################
+
+#################################################################################
+# READ IN ALL OF THE FUNCTIONS THAT WILL DOWNLOAD/INSTALL PROGS AND CREATE
+# USER SCRIPTS TO RUN THE PROGRAMS
+if [ -f ~/ARCH/SRC_CONFIG/CONFIG_FUNCS ]; then
+    source ~/ARCH/SRC_CONFIG/CONFIG_FUNCS
+else
+    printf "${BRed}----------  missing file: CONFIG_FUNCS  ----------${RESET}\n"
+    exit 1
+fi
+
+#################################################################################
+
+
+#################################################################################
+# DOWNLOAD/INSTALL PACKAGES
+install_basic_setup    $MIN_INSTALL
+
+install_system_tools   $MIN_INSTALL
+
+if [ "$MIN_INSTALL" = true ]; then
+    echo
+    printf "${BRed}MIN install${RESET} -- config I/O files:\n"
+    config_io              $MIN_INSTALL
+    echo
+fi
+if [ "$MIN_INSTALL" = false ]; then
+    echo
+    printf "${BRed}Full install${RESET} -- installing swap files:\n"
+    config_swap            $MIN_INSTALL
+    echo
+fi
+
+install_user_tools     $MIN_INSTALL
+
+install_filetools       $MIN_INSTALL
+
+install_scripting_tools $MIN_INSTALL
+
+install_network_compression $MIN_INSTALL
+
+config_openbox         $MIN_INSTALL
+
+config_ssh             $MIN_INSTALL
+
+config_emacs           $MIN_INSTALL
+#                                      //   packages inventory
+#                                      //   workgroup
+install_final_setup
+
+# RE-CREATE FILES, SOFTLINKS IN ~/bin
+# RSYNC     -e needed!!                    FROM                      TO
+rsync -aPhsAX -e 'ssh -p 2222' --exclude="DEV/*" edward@moe:/home/edward/bin/ ~/bin
+
+rsync -aPhsAX -e 'ssh -p 2222' edward@moe:/home/edward/R/ ~/R
+
+rsync -aPhsAX -e 'ssh -p 2222' --exclude="*.mp4" edward@moe:/home/edward/PYTHON/ ~/PYTHON
+
+rsync -aPhsAX -e 'ssh -p 2222' --exclude={"DEV/*","ARCHIVE/*","aui-master/*"}  edward@moe:/home/edward/ARCH/SRC_CONFIG/ ~/ARCH/SCR_CONFIG
+
+
+
+
+exit 0
+
+
+#################################################################################

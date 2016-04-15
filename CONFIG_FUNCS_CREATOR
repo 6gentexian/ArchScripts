@@ -1,0 +1,100 @@
+#!/bin/bash
+#################################################################################
+#  CONFIG_FUNC_CREATOR
+#  This script creates the script CONFIG_FUNCS - the script used in installing
+#  packages and user settings for Arch linux.
+#
+#  First, the scripts makes a copy of CONFIG_FUNCS_TEMPLATE named CONFIG_FUNCS.
+#
+#  Then script reads in the current values for the user's customized
+#  scripts and pastes them into CONFIG_FUNCS.
+#
+#  Useage:  On SOURCE machine, aka HOST, go to scripts' folder and run
+#  $ cd ~/ARCH/SRC_CONFIG
+#  $ ./CONFIG_FUNCS_CREATOR
+#################################################################################
+cd ~/ARCH/SRC_CONFIG
+
+#################################################################################
+# MAKE SURE EVERYTHING IS IN PLACE ON *HOST*
+if [ ! -f CONFIG_FUNCS ]; then
+    printf "${BRed}----------  missing file: CONFIG_FUNCS  ----------${RESET}\n"
+    exit 1
+fi
+if [ ! -f CONFIG_FUNCS_TEMPLATE ]; then
+    printf "${BRed}----------  missing file: CONFIG_FUNCS_TEMPLATE  ----------${RESET}\n"
+    exit 1
+fi
+if [ ! -f CONFIG_FUNCS_BUILDER ]; then
+    printf "${BRed}----------  missing file: CONFIG_FUNCS_BUILDER  ----------${RESET}\n"
+    exit 1
+fi
+
+#################################################################################
+
+if [ -f CONFIG_FUNCS ]; then
+    BU_NAME="CONFIG_FUNCS.$(date +"%Y.%m.%d")"
+    mv CONFIG_FUNCS $BU_NAME
+    mv $BU_NAME ~/ARCH/SRC_CONFIG/ARCHIVE/
+fi
+
+cp CONFIG_FUNCS_TEMPLATE CONFIG_FUNCS
+
+
+#### BASH
+
+./CONFIG_FUNCS_BUILDER 'create_bashrc()' 2  ~/.bashrc 0 CONFIG_FUNCS
+./CONFIG_FUNCS_BUILDER 'BASH_PROFILE' 1  ~/.bash_profile 0 CONFIG_FUNCS
+#########
+
+
+#### pacman/Xresources/xinit
+
+cp /etc/pacman.conf ~/pacman.conf
+
+./CONFIG_FUNCS_BUILDER 'config_pacman.conf()' 2 ~/pacman.conf 0 CONFIG_FUNCS
+./CONFIG_FUNCS_BUILDER 'create_xresources()' 2 ~/.Xresources 0 CONFIG_FUNCS
+./CONFIG_FUNCS_BUILDER 'create_xinitrc()' 2 ~/.xinitrc 0 CONFIG_FUNCS
+
+rm ~/pacman.conf
+############################
+
+
+#### Openbox
+
+./CONFIG_FUNCS_BUILDER 'create_menu.xml()' 2 ~/.config/openbox/menu.xml 0 CONFIG_FUNCS
+./CONFIG_FUNCS_BUILDER 'create_rc.xml()' 2 ~/.config/openbox/rc.xml 0 CONFIG_FUNCS
+############
+
+
+#### Terminator
+
+./CONFIG_FUNCS_BUILDER 'config_terminator()' 4 ~/.config/terminator/config 0 CONFIG_FUNCS
+./CONFIG_FUNCS_BUILDER 'config_terminator_windows()' 2 ~/bin/config.Windows.Terminator.sh 0 CONFIG_FUNCS
+###############
+
+
+#### Emacs
+
+./CONFIG_FUNCS_BUILDER 'config_emacs()' 6 ~/.emacs 0 CONFIG_FUNCS
+./CONFIG_FUNCS_BUILDER 'CONFIG .emacs.d/custom.el' 1 ~/.emacs.d/custom.el 0 CONFIG_FUNCS
+./CONFIG_FUNCS_BUILDER 'CONFIG .emacs.d/my-modeline.el' 1 ~/.emacs.d/my-modeline.el 0 CONFIG_FUNCS
+./CONFIG_FUNCS_BUILDER 'CONFIG .emacs.d/my-modes.el' 1 ~/.emacs.d/my-modes.el 0 CONFIG_FUNCS
+./CONFIG_FUNCS_BUILDER 'CONFIG .emacs.d/my-packages.el' 1 ~/.emacs.d/my-packages.el 0 CONFIG_FUNCS
+##########
+
+
+#### tint2
+
+./CONFIG_FUNCS_BUILDER 'config_tint2()' 5 ~/.config/tint2/tint2rc 0 CONFIG_FUNCS
+./CONFIG_FUNCS_BUILDER 'CONFIG tint2confrc' 1 ~/.config/tint2/tint2confrc 0 CONFIG_FUNCS
+##########
+
+
+#### SSHD
+
+cp /etc/ssh/sshd_config ~/sshd_config
+./CONFIG_FUNCS_BUILDER 'config_ssh()' 3 ~/sshd_config 0 CONFIG_FUNCS
+
+rm ~/sshd_config
+######### 
