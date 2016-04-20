@@ -18,7 +18,7 @@
 #  n.b.
 #    All generic functions used are in .bashrc. They are commented out at
 #      the end of this file if you don't want to place them in your startup file.
-#    $TMPDIR is set in .bash_profile
+#    $TMPDIR is set in .bash_profile or /etc/profile
 #
 #  TODO:  Add ability to update private repos vs ABS
 #################################################################################
@@ -90,39 +90,63 @@ print_title() {
   tput cuu1
   print_line $1
 }
-#################################################################################
-print_title prGreen "Test the title"
+log_to_markdown()
+{
+  if [ -f /var/log/arch-news.log ]; then
+      echo "arch"
 
+      cp /var/log/arch-news.log $TMPDIR
+      sudo chown $USER:users  $TMPDIR/arch-news.log
 
-exit 0
+      awk '{gsub(/\\n/,"\n")}1' $TMPDIR/arch-news.log > $TMPDIR/tmp.html
+      html2text $TMPDIR/tmp.html > $TMPDIR/tmp.md
 
+      markdown-reader $TMPDIR/tmp.md
+  fi
+
+  while true; do
+      echo
+      read -p "Would you like to continue?" yn
+      case $yn in
+          [Yy]* )
+              #sudo pacmatic -Su
+              echo "sudo pacmatic -Su"; break
+          ;;
+          [Nn]* )
+              prGreen "Good bye!"
+              exit 0
+              ;;
+          * ) echo "Please answer yes or no.";;
+      esac
+  done
+}
+#'################################################################################
 
 if [ -f /usr/bin/pacmatic ]; then
     # Refresh and sync all repositories
     prGreen "Refresh, sync, and update all official repos with pacmatic"
-    sudo pacmatic -Syy
-    echo
-    # (AAA) Here we need the function that will
-    #         1 load /var/log/arch-news.log
-    #         2 use awk to strip "\n" from file
-    #         3 use html2text to poop into markdown
-    #         4 view news in #EDITOR
-    #         5 prompt to continue
-    #sudo pacmatic -Su
+#    sudo pacmatic -Syy
 
+    # Here we have the function that will
+    #     1 load /var/log/arch-news.log
+    #     2 use awk to strip "\n" from file
+    #     3 use html2text to poop into markdown
+    #     4 view news in #MarkdownReader
+    #     5 prompt to continue
+    log_to_markdown
 else
     while true; do
         read -p prYellow "Would you like to use pacmatic to update (recommended)?" yn
         case $yn in
             [Yy]* )
-                sudo pacman -S pacmatic
-                sudo pacmatic -Syy
-                # deploy (AAA)
-                #sudo pacmatic -Su
+                #sudo pacman -S pacmatic
+                #sudo pacmatic -Syy
+                # log_to_markdown
+                echo "sudo pacmatic -Su"; break
                 ;;
             [Nn]* )
                 prYellow "Updating with pacman"
-                sudo pacman -Syy
+                #sudo pacman -Syy
                 #sudo pacman -Su
                 ;;
             * ) echo "Please answer yes or no.";;
@@ -131,6 +155,7 @@ else
 fi
 echo; echo
 
+exit 0
 
 prGreen "Updating the Arch Build System local package repo"
 # sudo abs
@@ -198,10 +223,10 @@ echo; echo
         read -p prYellow "Would you like to remove the orphans (recommended)?" yn
         case $yn in
             [Yy]* )
-                sudo pacman -Rns $(pacman -Qtdq)
+                sudo pacman -Rns $(pacman -Qtdq); break
                 ;;
             [Nn]* )
-                prGreen "Orphans left alone"
+                prGreen "Orphans left alone"; break
                 ;;
             * ) echo "Please answer yes or no.";;
         esac
@@ -216,17 +241,17 @@ echo; echo
         read -p prYellow "Would you like to remove the optional packages?" yn
         case $yn in
             [Yy]* )
-                sudo pacman -Rns $(comm -13 <(pacman -Qdtq) <(pacman -Qdttq))
+                sudo pacman -Rns $(comm -13 <(pacman -Qdtq) <(pacman -Qdttq)); break
                 ;;
             [Nn]* )
-                prGreen "Optional packages left alone"
+                prGreen "Optional packages left alone"; break
                 ;;
             * ) echo "Please answer yes or no.";;
         esac
     done
 
 ################################################################################
-prGreen "Sync/Upgrade complete!!"
+print_title prGreen "Sync/Upgrade complete!!"
 #################################################################################
 
 
