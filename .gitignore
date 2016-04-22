@@ -4,6 +4,13 @@ pacman-disowned.sh
 # Ignore all non-essential files
 *.tmp
 *~
+*.xml
+CONFIG*
+config*
+backup*
+tint2*
+autostart
+openbox*
 
 # Ignore everything in sub-folders
 DEV/
