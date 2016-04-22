@@ -3,6 +3,13 @@
 
 # Ignore all .tmp files
 *~
+*.xml
+CONFIG*
+config*
+backup*
+tint2*
+autostart
+openbox*
 
 
 # Ignore everything in DEV/
