@@ -1,0 +1,28 @@
+# ~/.config/openbox/autostart#
+#
+# These things are run when an Openbox X Session is started.
+# You may place a similar script in $HOME/.config/openbox/autostart
+# to run user-specific things.
+#################################################################################
+## Programs to launch at startup
+numlockx &
+xcompmgr -c &
+(sleep 0.5 && nitrogen --restore) &
+
+## Programs that will run after Openbox has started
+(sleep 0.5 && tint2) &
+(sleep 0.5 && /opt/dropbox/dropbox) &
+
+(sleep 0.5 && /usr/bin/terminator -m -b -l ebg2) &
+(sleep 1 && ~/bin/config.Windows.Terminator.sh) &
+
+(sleep 2 && /usr/bin/palemoon) &
+
+(sleep 0.5 && /usr/bin/thunderbird) &
+(sleep 0.5 && /usr/bin/spacefm) &
+
+(sleep 10 && /usr/bin/rstudio) &
+
+
+(sleep 1.0 && . ~/bin/conky_start) &
+(sleep 200 && /usr/bin/corebird) &

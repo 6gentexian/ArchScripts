@@ -1,7 +1,7 @@
 ##  README
 
 
-##  Summary
+##  Synopsis
 This suite of scripts provides basic config files for an ARCH linux system.  Also, there are two scripts that work together to improve the package manager, pacman.
 
 
@@ -58,9 +58,6 @@ Bash script replicating original code written in python? I can't remember where 
 All of the dot files are placed in ```~/``` , no sourcing etc is needed.
 For pacman
 *  Place reflector.sh and update.pacman.sh somewhere in your ```$PATH```, e.g. ```~/bin```
-*  Make sure that all scripts are executable, and folder is on your ```$PATH```:
-*  ```$ cd ~/bin/PACMAN       # cd into script folder```
-*  ```$ chmod +x update.pacman.sh reflector.sh```
 *  ```$ ./update.pacman.sh```
 
 

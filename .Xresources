@@ -1,23 +1,71 @@
-!! Xterm ----------------------------------------------------------------------
-xterm*VT100.geometry:	120x67+750+0
+!! ~/.Xresources
+!!
+!! -----------------------------------------------------------------------------
+!! Xterm -----------------------------------------------------------------------
+xterm.VT100.geometry:	  120x67+1050+25
+xterm*utf8:             2
 
+xterm.VT100.faceName:   "DejaVu Sans Mono"
+xterm.VT100.faceSize:   9
 
-xterm*utf8:             1
-xterm*faceName:         Terminus:style=Regular:size=8
-xterm*font:             -*-terminus-medium-*-*-*-18-*-*-*-*-*-iso10646-*
-xterm*foreground:       white
-xterm*background:       black
-xterm*termName:         xterm-256color
-xterm*saveLines:        91200
+xterm.VT100.foreground:       white
+xterm.VT100.background:       black
+
+xterm*termName:               xterm-256color
+xterm.VT100.saveLines:        91200
+
 xterm*rightScrollBar:   true
 xterm*toolBar:          false
-xterm*locale:           true
-xterm*metaSendsEscape:  true
-xterm*dynamicColors:    true
-xterm*cursorColor:      yellow
-xterm*cursorBlink:      true
 xterm*scrollKey:        true
 
+xterm.VT100.metaSendsEscape:  true
+xterm*dynamicColors:          true
 
-Xcursor*theme: vanilla-dmz
-Xcursor*size: 12
+xterm*cursorColor:      yellow
+xterm*cursorBlink:      true
+
+xcursor*theme:  vanilla-dmz
+xcursor*size:   10
+
+!! Select text with double click
+xterm*highlightSelection:     true
+!! Remove trailing spaces
+xterm*trimSelection:          true
+
+
+
+
+
+
+!! ------------------------  TODO?  --------------------------------------------
+!! ----------  COPY/PASTE, HIGHLIGHT WORD OR LINE, RM WHITESPACE
+!! This buggers up emacs, terminator, but does work very well in xterm.
+!xterm.VT100.selectToClipboard:
+!<Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0) \n\
+!Ctrl Shift <Key>C: copy-selection(CLIPBOARD) \n\
+!Ctrl Shift <Key>V: insert-selection(CLIPBOARD)
+
+!! Ability to scale font sizes on the fly
+!! VT Font Menu: Unreadable
+!xterm*faceSize1: 8
+!! VT font menu: Tiny
+!xterm*faceSize2: 10
+!! VT font menu: Medium
+!xterm*faceSize3: 12
+!! VT font menu: Large
+!xterm*faceSize4: 16
+!! VT font menu: Huge
+!xterm*faceSize5: 22
+
+!!xterm.VT100.Translations: #override \
+!!    Ctrl <Key> minus: smaller-vt-font() \n\
+!!    Ctrl <Key> plus: larger-vt-font() \n\
+!!Ctrl <Key> 0: set-vt-font(d)
+
+!! ----------  DEPRECATED SETTINGS
+!!!XTerm*eightBitInput:        true
+!xterm*utf8:             2
+!!xterm.VT100.faceName:         Terminus:style=Book:size=8
+!xterm*renderFont:  true
+!!xterm.VT100.font:             -*-terminus-medium-*-*-*-18-*-*-*-*-*-iso10646-1
+!xterm*locale:  true

@@ -1,0 +1,71 @@
+[Unit]
+Description=Syncs files for tiddlywiki and a great many files elsewhere
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.bashrc /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.bash_profile /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.inputrc /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.profile /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.Xauthority /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.xinitrc /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.Xresources /home/edward/Dropbox/TW/SCRIPTS/
+
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/bin/OPENBOX/config.Windows.Terminator.sh /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/bin/OPENBOX/conky_start /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/bin/OPENBOX/openbox-pipemenu /home/edward/Dropbox/TW/SCRIPTS/
+
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.conky/conky_start /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.conky/sysproc.conkyrc /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.conky/logs.conkyrc /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.conky/network.conkyrc /home/edward/Dropbox/TW/SCRIPTS/
+
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/openbox/autostart /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/openbox/rc.xml /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/openbox/menu.xml /home/edward/Dropbox/TW/SCRIPTS/
+
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.emacs /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.emacs.d/lisp/custom.el /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.emacs.d/lisp/my-modes.el /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.emacs.d/lisp/my-modeline.el /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.emacs.d/lisp/my-packages.el /home/edward/Dropbox/TW/SCRIPTS/
+
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/bin/PACMAN/pacman-disowned.sh /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/bin/PACMAN/reflector.sh /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/bin/PACMAN/update.pacman.sh /home/edward/Dropbox/TW/SCRIPTS/
+
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/bin/BACKUP/backup_archive_sftp.sh /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/bin/BACKUP/backup_daily.sh /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/bin/BACKUP/backup_sys.sh /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/bin/BACKUP/backup_home.sh /home/edward/Dropbox/TW/SCRIPTS/
+
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/R/SYS_SCRIPTS/javaconf /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/R/SYS_SCRIPTS/Makeconf /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/R/SYS_SCRIPTS/ldpaths /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/R/SYS_SCRIPTS/Renviron /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/R/SYS_SCRIPTS/repositories /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/R/SYS_SCRIPTS/Rprofile.site /home/edward/Dropbox/TW/SCRIPTS/
+
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/modprobed.db /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/modprobed-db.conf /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/nitrogen/bg-saved.cfg /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/nitrogen/nitrogen.cfg /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/pacman/installed_pkglist.txt /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/pacman/pacman_installed_pkglist.txt /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/terminator/config.ebg /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/tint2/tint2confrc /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /home/edward/.config/tint2/tint2rc /home/edward/Dropbox/TW/SCRIPTS/
+
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/mkinitcpio.conf /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/mongodb.conf /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/rsyncd.conf /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/pacman.conf /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/dhcpcd.conf /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/fstab /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/makepkg.conf /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/default/grub /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/ssh/ssh_config /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/ssh/sshd_config /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/fcron/fcron.allow /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/fcron/fcron.conf /home/edward/Dropbox/TW/SCRIPTS/
+ExecStart=/usr/bin/rsync -aPhsqAX /etc/fcron/fcron.deny /home/edward/Dropbox/TW/SCRIPTS/

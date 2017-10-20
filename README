@@ -1,5 +1,6 @@
 #################################################################################
 #  README
+#  ======
 #
 #
 #  This suite of scripts provides basic config files for an ARCH linux system.
@@ -7,7 +8,7 @@
 #  pacman.
 #
 #
-#  Files
+#  FILES
 #    .inputrc - From LFS: Inputrc deals with the mapping of the keyboard for
 #      certain situations. This file is the start-up file used by readline,
 #      the input related library used by bash and most other shells.
@@ -33,7 +34,7 @@
 #
 #    .Xdefaults - although the use of this file is deprecated in Arch, setting
 #      user specific configs (e,g, for a laptop vs a desktop for the size and
-#       placement of an xterm window) may com in handy.
+       placement of an xterm window) may com in handy.
 #      .Xdefaults-curly - host specific file (Acer chromebook)
 #      .Xdefaults-moe - host specfici file (desktop)
 #
@@ -61,12 +62,9 @@
 #
 #
 #  USE:  All of the dot files are placed in ~/ , no sourcing etc is needed.
-#
 #        For pacman:
-#          Make sure that all scripts are executable, and folder is on your $PATH:
-#          $ cd ~/bin/PACMAN       # cd into script folder
-#          $ chmod +x update.pacman.sh reflector.sh
-#          $ echo $PATH
+#          Place reflector.sh and update.pacman.sh somewhere in your
+#            $PATH, e.g. ~/bin
 #          $ ./update.pacman.sh
 #
 #

@@ -1,16 +1,14 @@
 # File that appears obsolete
-pacman-disowned.sh
 
-# Ignore all non-essential files
-*.tmp
+
+# Ignore all .tmp files
 *~
-*.xml
 CONFIG*
-config*
+config
 backup*
 tint2*
-autostart
 openbox*
 
-# Ignore everything in sub-folders
+
+# Ignore everything in DEV/
 DEV/

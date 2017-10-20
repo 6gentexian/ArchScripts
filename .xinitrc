@@ -13,10 +13,8 @@ fi
 
 
 # make the xterm prompt etc prettier than the crap default
-[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+[[ -f ~/.Xresources ]] && xrdb -load ~/.Xresources
 
 
 
 exec openbox-session
-
-
