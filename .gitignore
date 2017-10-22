@@ -4,12 +4,14 @@
 # Ignore all .tmp files
 *~
 CONFIG*
-config
+config*
 backup*
 
 tint2*
 openbox*
 reflector*
+
+update.pacman.sh
 
 
 # Ignore everything in DEV/
