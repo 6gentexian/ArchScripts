@@ -6,8 +6,10 @@
 CONFIG*
 config
 backup*
+
 tint2*
 openbox*
+reflector*
 
 
 # Ignore everything in DEV/
